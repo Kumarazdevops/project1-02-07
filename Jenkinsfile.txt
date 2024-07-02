@@ -10,7 +10,7 @@
         stage('Checkout') {
             steps {
                 script {
-                    git branch: 'master', url: ''
+                    git branch: 'master', url: 'https://github.com/Kumarazdevops/project1-02-07.git'
                 }
             }
         }
@@ -27,7 +27,7 @@
             steps {
                 script {
                     docker.image(dockerImage).run("--rm")
-                    // Add additional testing steps as needed
+                    
                 }
             }
         }
@@ -35,10 +35,10 @@
         stage('Deploy') {
             steps {
                 script {
-                    docker.withRegistry('https://${registry}', 'docker-credentials') {
+                    docker.withRegistry('https://hub.docker.com/repository/docker/sravankumar0338/project1/general', 'docker-credentials') {
                         docker.image(dockerImage).push()
                     }
-                    // Add deployment steps (e.g., Kubernetes, Docker Swarm, etc.)
+                   
                 }
             }
         }
