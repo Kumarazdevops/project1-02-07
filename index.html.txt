@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My page</title>
-</head>
-<body>
-    <h1 style="text-align: center;">Welcome</h1>
-    <h1 style="text-align: center; color:red;">Welcome</h1>
-</body>
+ <!doctype html>
+<html>
+ <body style="backgroud-color:rgb(49, 214, 220);"><center>
+    <head>
+     <title>Docker Project</title>
+    </head>
+    <body>
+     <p>Welcome to my Docker Project!<p>
+        <p>Today's Date and Time is: <span id='date-time'></span><p>
+        <script>
+             var dateAndTime = new Date();
+             document.getElementById('date-time').innerHTML=dateAndTime.toLocaleString();
+        </script>
+        </body>
 </html>
