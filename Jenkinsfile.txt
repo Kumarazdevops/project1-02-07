@@ -1,23 +1,46 @@
-node {    
-      def app     
-      stage('Clone repository') {               
-             
-            checkout scm    
-      }     
-      stage('Build image') {         
-       
-            app = docker.build("sravankumar0338/test")    
-       }     
-      stage('Test image') {           
-            app.inside {            
-             
-             sh 'echo "Tests passed"'        
-            }    
-        }     
-       stage('Push image') {
-       docker.withRegistry('https://hub.docker.com/repository/docker/sravankumar0338/project1/general', 'git') {            
-       app.push("${env.BUILD_NUMBER}")            
-       app.push("latest")        
-              }    
-           }
+ pipeline {
+    agent any
+
+    environment {
+        registry = "https://hub.docker.com/repository/docker/sravankumar0338/project1/general" 
+        dockerImage = ''
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    git branch: 'master', url: ''
+                }
+            }
         }
+
+        stage('Build') {
+            steps {
+                script {
+                    dockerImage = docker.build("my-web-app:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    docker.image(dockerImage).run("--rm")
+                    // Add additional testing steps as needed
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    docker.withRegistry('https://${registry}', 'docker-credentials') {
+                        docker.image(dockerImage).push()
+                    }
+                    // Add deployment steps (e.g., Kubernetes, Docker Swarm, etc.)
+                }
+            }
+        }
+    }
+}
